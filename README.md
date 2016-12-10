@@ -57,7 +57,11 @@ message Message {
   uint32 checksum = 4;
   bytes payload = 5;
 }
+```
+
 There’s a couple of other frequently used data structures:
+
+```protobuf
 message NetAddress {
   uint32 timestamp = 1;
   uint64 services = 2;
