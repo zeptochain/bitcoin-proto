@@ -1,0 +1,201 @@
+// Bitcoin Protocol
+// Version with enum contraints and the more obvious defaults
+// Splits out Coinbase as a type
+
+syntax = "proto3";
+package bitcoin;
+
+message Message {
+	enum Command {
+		VERSION = 0;
+		VERACK = 1;
+		ADDR = 2;
+		INV = 3;
+		GET_DATA = 4;
+		NOT_FOUND = 5;
+		GET_BLOCKS = 6;
+		GET_HEADERS = 7;
+		TX = 8;
+		BLOCK = 9;
+		HEADERS = 10;
+		GET_ADDR = 11;
+		MEMPOOL = 12;
+		PING = 13;
+		PONG = 14;
+		REJECT = 15;
+		ALERT = 16;
+		FILTER_LOAD = 17;
+		FILTER_ADD = 18;
+		FILTER_CLEAR = 19;
+		MERKLE_BLOCK = 20;
+	}
+	fixed32 magic = 1 [default = 3652501241]; // Transmitted as 0xF9BEB4D9 in NBO
+	Command command = 2;
+	uint32 payload_length = 3;
+	uint32 checksum = 4;
+	bytes payload = 5;
+}
+
+message Block {
+	uint32 version = 1 [default = 2];
+	bytes previous_block = 2;
+	bytes merkle_root = 3;
+	uint32 timestamp = 4;
+	uint32 bits = 5;
+	uint32 nonce = 6;
+	Coinbase coinbase = 7;
+	repeated Transaction transactions = 8;
+}
+
+message Coinbase {
+	uint32 version = 1 [default = 1];
+	CoinbaseInput input = 2;
+	repeated TransactionOutput = 3;
+}
+
+message CoinbaseInput {
+	uint32 block_height = 1;
+	bytes miner_data = 2;
+	sint32 sequence = 3;
+}
+
+message Transaction {
+	uint32 version = 1 [default = 1];
+	repeated TransactionInput inputs = 2;
+	repeated TransactionOutput outputs = 3;
+	uint32 lock_time = 4;
+}
+
+message Script {
+	bytes script = 1;
+}
+
+message TransactionInput {
+	bytes outpoint_ref = 1;
+	uint32 outpoint_index = 2;
+	Script sig_script = 3;
+	sint32 sequence = 4;
+}
+
+message TransactionOutput {
+	uint32 value = 1;
+	Script pk_script = 2;
+}
+
+message NetAddress {
+	uint32 timestamp = 1;
+	uint64 services = 2;
+	bytes ip_address = 3;
+	uint32 port = 4 [default = 8333];
+}
+
+message InventoryVector {
+	enum VectorType {
+		ERROR = 0;
+		TRANSACTION = 1;
+		BLOCK = 2;
+		FILTERED_BLOCK = 3;
+	}
+	VectorType type = 1;
+	bytes hash_reference = 2;
+}
+
+message Version {
+	uint32 version = 1;
+	uint64 services = 2;
+	uint64 timestamp = 3;
+	NetAddress addr_to = 4;
+	NetAddress addr_from = 5;
+	uint64 nonce = 6;
+	string user_agent = 7;
+	uint32 start_height = 8;
+	bool relay = 9;
+}
+
+message Verack { }
+
+message Addr {
+	repeated NetAddress address_list = 1;
+}
+
+message Inv {
+	repeated InventoryVector vectors = 1;
+}
+
+message GetData {
+	repeated InventoryVector vectors = 1;
+}
+
+message NotFound {
+	repeated InventoryVector vectors = 1;
+}
+
+message GetBlocks {
+	uint32 version = 1;
+	repeated bytes block_locator_hashes = 2;
+	bytes hash_stop = 3;
+}
+
+message GetHeaders {
+	uint32 version = 1;
+	repeated bytes block_locator_hashes = 2;
+	bytes hash_stop = 3;
+}
+
+message GetAddr { }
+
+message Mempool { }
+
+message Ping {
+	uint64 nonce = 1;
+}
+
+message Pong {
+	uint64 nonce = 1;
+}
+
+message Alert {
+	bytes payload = 1;
+	bytes signature = 2;
+}
+
+message Reject {
+	enum Reason {
+		UNDEFINED = 0;
+		MALFORMED = 1;
+		INVALID = 2;
+		OBSOLETE = 3;
+		DUPLICATE = 4;
+		NONSTANDARD = 5;
+		DUST = 6;
+		INSUFFIENT_FEE = 7;
+		CHECKPOINT = 8;
+	}
+	string message = 1;
+	Reason ccode = 2;
+}
+
+message FilterLoad {
+	bytes filter = 1;
+	uint32 number_of_hash_functions = 2;
+	uint32 tweak_nonce = 3;
+	uint32 flags = 4;
+}
+
+message FilterAdd {
+	bytes data = 1;
+}
+
+message FilterClear { }
+
+message MerkleBlock {
+	uint32 version = 1 [default = 2];
+	bytes previous_block = 2;
+	bytes merkle_root = 3;
+	uint32 timestamp = 4;
+	uint32 bits = 5;
+	uint32 nonce = 6;
+	uint32 total_transactions = 7;
+	repeated bytes hashes = 8;
+	bytes flags = 9;
+}

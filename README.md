@@ -29,18 +29,21 @@ message Block {
   uint32 nonce = 6;
   repeated Transaction transactions = 7;
 }
+
 message Transaction {
   uint32 version = 1;
   repeated TransactionInput inputs = 2;
   repeated TransactionOutput outputs = 3;
   uint32 lock_time = 4;
 }
+
 message TransactionInput {
   bytes outpoint_ref = 1;
   uint32 outpoint_index = 2;
   bytes sig_script = 3;
   uint32 sequence = 4;
 }
+
 message TransactionOutput {
   uint32 value = 1;
   bytes pk_script = 2;
@@ -68,6 +71,7 @@ message NetAddress {
   bytes ip_address = 3;
   uint32 port = 4;
 }
+
 message InventoryVector {
   uint32 type = 1;
   bytes hash_reference = 2;
@@ -87,55 +91,72 @@ message Version {
   uint32 start_height = 8;
   bool relay = 9;
 }
+
 message Verack { }
+
 message Addr {
   repeated NetAddress address_list = 1;
 }
+
 message Inv {
   repeated InventoryVector vectors = 1;
 }
+
 message GetData {
   repeated InventoryVector vectors = 1;
 }
+
 message NotFound {
   repeated InventoryVector vectors = 1;
 }
+
 message GetBlocks {
   uint32 version = 1;
   repeated bytes block_locator_hashes = 2;
   bytes hash_stop = 3;
 }
+
 message GetHeaders {
   uint32 version = 1;
   repeated bytes block_locator_hashes = 2;
   bytes hash_stop = 3;
 }
+
 message GetAddr { }
+
 message Mempool { }
+
 message Ping {
   uint64 nonce = 1;
 }
+
 message Pong {
   uint64 nonce = 1;
 }
+
 message Alert {
   bytes payload = 1;
   bytes signature = 2;
 }
+
 message Reject {
   string message = 1;
   uint32 ccode = 2;
 }
+
 message FilterLoad {
   bytes filter = 1;
   uint32 number_of_hash_functions = 2;
   uint32 tweak_nonce = 3;
   uint32 flags = 4;
 }
+
 message FilterAdd {
   bytes data = 1;
 }
+
 message FilterClear { }
+
 message MerkleBlock {
   uint32 version = 1;
   bytes previous_block = 2;
