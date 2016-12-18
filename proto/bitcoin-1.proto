@@ -1,4 +1,5 @@
 // Bitcoin Protocol
+// Second swag
 // Version with enum contraints and the more obvious defaults
 // Splits out Coinbase as a type
 
