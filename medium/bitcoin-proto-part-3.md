@@ -2,7 +2,7 @@
 
 OK. I just gave the game away by shoving it into the title. A bit late to say “spoiler alert”, I guess.
 
-Last time I left the idea hanging that Bitcoin’s consensus rules could perhaps be expressed most effectively using Bitcoin’s own scripting language. What should give us additional confidence in this choice is that Bitcoin Script is a language that was explicitly designed for expressing distributed contracts. Surely, it would be impossible to argue that the consensus rules for Bitcoin, when taken together, are anything other than a contract?
+Last time I left the idea hanging that Bitcoin’s consensus rules could perhaps be expressed most effectively using Bitcoin’s own scripting language. What should give us additional confidence in this choice is that Bitcoin Script is a language that was _explicitly designed_ for expressing distributed __contracts__. Surely, it would be impossible to argue that the consensus rules for Bitcoin, when taken together, are anything other than a contract?
 
 Unfortunately, the present situation is that the contract terms that we expected to agree to is delivered to us as an unordered, highly cross-referenced, constantly changing, “book of codes” written in a language that only a minority actually understand, and which includes a massive dead weight of rules and concerns that have nothing at all to do with the contract. You shouldn’t have to suck that up; you wouldn’t just suck that up if your home insurance policy or credit card conditions were delivered to you in that form. Surely we deserve better.
 
@@ -17,10 +17,12 @@ So I guess the right thing to do is:
 Time to get to work, right? All that should be enough for anyone to have to swallow! But wait a moment… we’re not going to let ourselves off the hook that easy. Instead, let’s go all the way and express Script itself as a protocol buffer, to see where that path takes us. As it turns out, it too leads somewhere kinda interesting.
 
 Let’s take quick look at how you could do something this ludicrous, since you’re likely wondering about that, and the “how” bit is actually pretty easy:
+
 ```protobuf
 message Script {
   repeated Operation operations = 1;
 }
+
 message Operation {
   enum Code {
     OP_FALSE = 0;
@@ -59,6 +61,7 @@ My big thing point here is that C++ is not the greatest choice for a reference i
 ---
 
 Finally, let’s take a moment to see where we’ve landed, as it has gone far beyond the original motivation of merely specifying how Bitcoin works now:
+
 1. We have the opportunity to build an unambiguous specification with little room for misunderstandings.
 1. We have a language and platform neutral serialization format for all of the data structures and constraint functions that could be contained in this specification.
 1. Proposed new rules could be distributed and evaluated in unambiguous form, and could be accepted or rejected to form a new consensus.
