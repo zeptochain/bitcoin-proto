@@ -50,7 +50,7 @@ message Block {
 message Coinbase {
 	uint32 version = 1 [default = 1];
 	CoinbaseInput input = 2;
-	repeated TransactionOutput = 3;
+	repeated TransactionOutput output = 3;
 }
 
 message CoinbaseInput {
